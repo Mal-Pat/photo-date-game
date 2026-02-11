@@ -141,7 +141,6 @@ class PhotoGame:
             wins_print += f" {self.players[i+1]} : {self.wins[i+1]} |"
         print(f"\nWins: {wins_print}")
         print(f"\nScores: {scores_print}")
-        
 
     def display_round_scores(self, diffs):
         sorted_diffs = sorted(diffs.items(), key = lambda item : item[1])
@@ -180,6 +179,7 @@ class PhotoGame:
             self.game_round(r)
             r += 1
             cont = input(f"\nContinue to round {r}? [Y/n]: ")
+        print("\n____________Game Ends_____________")
 
 folder_paths_file = "folders.txt"
 game = PhotoGame(folder_paths_file)
