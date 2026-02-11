@@ -74,13 +74,16 @@ def ask_cache(image_pool):
         write_cache(image_pool, cache_name)
 
 def initiate(folder_paths_file):
-    ans = input("Do you wish to read from cache? [y/n]: ")
+    ans = "n"
+    if os.path.exists("cache"):
+        ans = input("Do you wish to read from cache? [y/n]: ")
     if ans == "Y" or ans == "y":
         cache_name = input("Name of cache file: ")
         image_pool = read_cache(cache_name)
         if not image_pool:
             raise Exception("No images found in the cache!")
     else:
+        print("Reading folders...")
         folder_paths = get_folders(folder_paths_file)
         image_pool = get_images(folder_paths)
         ask_cache(image_pool)
