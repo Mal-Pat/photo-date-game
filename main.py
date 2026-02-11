@@ -50,11 +50,20 @@ def get_images(folder_paths):
     return image_pool
 
 def write_cache(image_pool, cache_name):
-    with open(f"{cache_name}.pkl", "wb") as outfile:
+    cache_path = f"cache/{cache_name}.pkl"
+    if not os.path.exists("cache"):
+        try:
+            os.mkdir("cache")
+        except OSError as e:
+            print(f"Error creating directory cache: {e}")
+    with open(cache_path, "wb") as outfile:
         pickle.dump(image_pool, outfile)
 
 def read_cache(cache_name):
-    with open(f"{cache_name}.pkl", "rb") as infile:
+    cache_path = f"cache/{cache_name}.pkl"
+    if not os.path.exists(cache_path):
+        raise Exception(f"{cache_path} not found!")
+    with open(cache_path, "rb") as infile:
         image_pool = pickle.load(infile)
     return image_pool
 
@@ -63,8 +72,6 @@ def ask_cache(image_pool):
     if ans == "Y":
         cache_name = input("Name the cache file: ")
         write_cache(image_pool, cache_name)
-    else:
-        print("Not caching!")
 
 def initiate(folder_paths_file):
     ans = input("Do you wish to read from cache? [Y/n]: ")
