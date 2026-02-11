@@ -109,7 +109,7 @@ def get_date_diff(date_str1, date_str2):
         return None
     
 def get_players_info():
-    print("____________Enter Info____________")
+    print("\n____________Enter Info____________")
     n = int(input("Number of players: "))
     if n <= 0:
         raise Exception("Number of players cannot be <= 0")
@@ -134,44 +134,43 @@ class PhotoGame:
         return img_date
     
     def display_stats(self):
-        print(f"______________Stats______________")
+        print("\n______________Stats______________")
         scores_print, wins_print = "|", "|"
         for i in range(self.n):
             scores_print += f" {self.players[i+1]} : {round(self.scores[i+1], 2)} |"
             wins_print += f" {self.players[i+1]} : {self.wins[i+1]} |"
-        print("__Scores__________")
-        print(scores_print)
-        print("__Wins____________")
-        print(wins_print)
+        print(f"\nWins: {wins_print}")
+        print(f"\nScores: {scores_print}")
+        
 
     def display_round_scores(self, diffs):
         sorted_diffs = sorted(diffs.items(), key = lambda item : item[1])
         diffs_print = "|"
         for key, value in sorted_diffs:
-            diffs_print += f" {self.players[key]} : {value} |"
-        print("__Scores__________")
+            diffs_print += f" {self.players[key]} : {round(value, 2)} |"
+        print("\n___________Round Score___________")
         print(diffs_print)
     
     def game_round(self, r):
-        print(f"_____________Round {r}_____________")
+        print(f"\n_____________Round {r}_____________")
         img_date = self.get_random_image()
         guesses, diffs = {}, {}
         for i in range(self.n):
             while True:
-              guesses[i+1] = input(f"{self.players[i+1]}'s Guess: ")
+              guesses[i+1] = input(f"{self.players[i+1]}'s guess: ")
               diffs[i+1] = get_date_diff(img_date, guesses[i+1])
               if diffs[i+1] == None:
                   print("Incorrect date format! It must be 'YYYY:MM:DD HH:MM:SS'. Try again: ")
                   continue
               break
             self.scores[i+1] += diffs[i+1]
-        print("__Answer__________")
+        print("\n______________Answer______________")
         print(img_date)
         min_diff = min(diffs.values())
         winners = [key for key, value in diffs.items() if value == min_diff]
         for winner in winners:
             self.wins[winner] += 1
-        self.display_round_scores()
+        self.display_round_scores(diffs)
         self.display_stats()
     
     def start_game(self):
@@ -180,7 +179,7 @@ class PhotoGame:
         while cont != "n":
             self.game_round(r)
             r += 1
-            cont = input(f"Continue to round {r}? [Y/n]: ")
+            cont = input(f"\nContinue to round {r}? [Y/n]: ")
 
 folder_paths_file = "folders.txt"
 game = PhotoGame(folder_paths_file)
