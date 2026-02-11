@@ -9,7 +9,7 @@ def get_folders(folder_paths_file):
     folder_paths = []
     with open(folder_paths_file, "r") as infile:
         for line in infile:
-            folder_paths.append(line)
+            folder_paths.append(line.strip())
     return folder_paths
 
 def get_image_date(path):
@@ -38,8 +38,8 @@ def get_images(folder_paths):
         for root, _, files in os.walk(folder):
             for file in files:
                 num += 1
-                if num%100 == 0:
-                    print(f"{num} images loaded from {folder}!")
+                if num%500 == 0:
+                    print(f"{num} images loaded from {folder}")
                 if file.endswith(extensions):
                     full_path = os.path.join(root, file)
                     date = get_image_date(full_path)
@@ -68,14 +68,14 @@ def read_cache(cache_name):
     return image_pool
 
 def ask_cache(image_pool):
-    ans = input("Do you wish to cache the paths for quick loading next time? [Y/n]: ")
-    if ans == "Y":
+    ans = input("Do you wish to cache the paths for quick loading next time? [y/n]: ")
+    if ans != "n":
         cache_name = input("Name the cache file: ")
         write_cache(image_pool, cache_name)
 
 def initiate(folder_paths_file):
-    ans = input("Do you wish to read from cache? [Y/n]: ")
-    if ans == "Y":
+    ans = input("Do you wish to read from cache? [y/n]: ")
+    if ans == "Y" or ans == "y":
         cache_name = input("Name of cache file: ")
         image_pool = read_cache(cache_name)
         if not image_pool:
@@ -181,4 +181,7 @@ class PhotoGame:
             self.game_round(r)
             r += 1
             cont = input(f"Continue to round {r}? [Y/n]: ")
-        
+
+folder_paths_file = "folders.txt"
+game = PhotoGame(folder_paths_file)
+game.start_game()
